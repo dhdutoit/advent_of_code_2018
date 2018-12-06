@@ -8,19 +8,18 @@ $frequencyHistory = [];
 
 repeat($input, $frequencyHistory);
 
-function repeat($input, $frequencyHistory, $startFreq = 0)
+function repeat($input, $frequencyHistory, $frequency = 0)
 {
     echo ".";
 
-    $frequency = $startFreq;
     foreach ($input as $key => $sequence) {
         $frequency += intval($sequence);
         if (in_array($frequency, $frequencyHistory)) {
             echo $frequency . "\n";
             exit;
-        } else {
-            $frequencyHistory[] = $frequency;
         }
+
+        $frequencyHistory[] = $frequency;
     }
 
     repeat($input, $frequencyHistory, $frequency);
