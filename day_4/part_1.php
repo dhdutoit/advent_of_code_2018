@@ -35,6 +35,7 @@ foreach ($sortedData as $key => $event) {
 
 //calculate sleeping for each
 $sleepRecord = [];
+$sameMinuteRecord = [];
 foreach ($guardSchedules as $guard => $schedule) {
 
     $sleep;
@@ -60,8 +61,10 @@ foreach ($guardSchedules as $guard => $schedule) {
     }
 
     $minutesSleptIn = array_count_values($minuteRange);
-    $mostSleptMinute = current(array_keys($minutesSleptIn, max($minutesSleptIn)));
+    $minuteCount = max($minutesSleptIn);
+    $mostSleptMinute = current(array_keys($minutesSleptIn, $minuteCount));
 
+    //strategy 1
     if ($totalSleep > $sleepRecord[1]) {
         $sleepRecord = [
             $guard,
@@ -69,8 +72,19 @@ foreach ($guardSchedules as $guard => $schedule) {
             $mostSleptMinute,
         ];
     }
+
+    //strategy 2
+    if ($minuteCount > $sameMinuteRecord[1]) {
+        $sameMinuteRecord = [
+            $guard,
+            $minuteCount,
+            $mostSleptMinute,
+        ];
+    }
 }
 
-//print_r($guardSchedules);
 $answer = $sleepRecord[0] * $sleepRecord[2];
-echo $answer . "\n";
+echo "Strategy 1 - " . $answer . "\n";
+
+$answer = $sameMinuteRecord[0] * $sameMinuteRecord[2];
+echo "Strategy 2 - " . $answer . "\n";
